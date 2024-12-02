@@ -19,16 +19,20 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: "18.x"
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+      # - name: npm install, build, and test
+      #   run: |
+      #     npm install
+      #     npm run build --if-present
+      #     npm run test --if-present
+      # Build server
+      - name: Build server
+        working-directory: ./server
+        run: npm run build:project
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip release.zip ./dist/* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -40,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
@@ -53,7 +57,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -61,11 +65,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9C656BC4827F4F13AE5CB268F2F453CE }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_ED6A5D9AC40B4D7885BAFCEB5179BA0D }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'pbs-virtual-healthcare-new'
-          slot-name: 'Production'
+          app-name: "pbs-virtual-healthcare-new"
+          slot-name: "Production"
           package: .
-          

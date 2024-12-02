@@ -27,10 +27,10 @@ jobs:
       #     npm run build --if-present
       #     npm run test --if-present
       # Build client
-      - name: Install react-dev-utils globally
-        working-directory: ./client
-        run: |
-          npm install react-dev-utils@12.0.1
+      # - name: Install react-dev-utils globally
+      #   working-directory: ./client
+      #   run: |
+      #     npm install react-dev-utils@12.0.1
       - name: Build client
         continue-on-error: true # This is needed because the build script fails
         working-directory: ./client

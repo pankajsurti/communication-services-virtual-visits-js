@@ -29,7 +29,9 @@ jobs:
       # Build server
       - name: Build server
         working-directory: ./server
-        run: npm run build:project
+        run: |
+          npm install 
+          npm run build:project
 
       - name: Zip artifact for deployment
         run: zip release.zip ./dist/* -r

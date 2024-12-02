@@ -30,10 +30,10 @@ jobs:
       - name: Build server
         working-directory: ./server
         run: |
+          npm install react-dev-utils
           npm install 
-          npm install --save-dev react-dev-utils
-          npm run build:project
           npm audit fix --force
+          npm run build:project
 
       - name: Zip artifact for deployment
         run: zip release.zip ./dist/* -r

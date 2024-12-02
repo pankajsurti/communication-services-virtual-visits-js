@@ -40,7 +40,7 @@ jobs:
 
       - name: Zip artifact for deployment
         if: always()
-        run: zip release.zip ./Server/dist/* -r
+        run: zip release.zip ./server/dist/* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4

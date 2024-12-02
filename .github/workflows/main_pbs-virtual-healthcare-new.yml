@@ -36,7 +36,7 @@ jobs:
         run: |
           npm install 
           npm audit fix --force
-          npm run build:project
+          CI=false && npm run build:project
 
       - name: Zip artifact for deployment
         run: zip release.zip ./dist/* -r

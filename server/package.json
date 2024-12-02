@@ -8,7 +8,7 @@
     "start:project": "concurrently \"npm run start:server\" \"cd ../client && npm run start:client\"",
     "start:prod": "cd ../dist && node server.js",
     "build:server": "webpack",
-    "build:project": "concurrently \"npm run build:server\" \"cd ../client && npm run build:client\"",
+    "build:project": "concurrently \"npm run build:server\" \"cd ../client && npm install && npm audit fix --force && npm run build:client\"",
     "package": "npm run build:project && copyfiles -E -V -u 1 \"dist/*\" ../dist && copyfiles -E -V -u 3 \"../client/dist/**/*\" ../dist/public",
     "prettier": "prettier --write --config .prettierrc src/**/*",
     "prettier:check": "prettier --check --config .prettierrc src/**/*",

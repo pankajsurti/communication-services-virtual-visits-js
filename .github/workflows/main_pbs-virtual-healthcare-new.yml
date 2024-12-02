@@ -35,6 +35,7 @@ jobs:
         continue-on-error: true # This is needed because the build script fails
         working-directory: ./client
         run: |
+          npm install concurrently 
           npm run package
 
       - name: Zip artifact for deployment

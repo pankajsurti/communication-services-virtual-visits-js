@@ -34,7 +34,7 @@ jobs:
       - name: Build server
         working-directory: ./server
         run: |
-          npm install --no-optional
+          npm install --omit=optional
           npm audit fix --force
           CI=false && npm run build:project
 

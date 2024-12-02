@@ -39,6 +39,7 @@ jobs:
           CI=false && npm run build:project
 
       - name: Zip artifact for deployment
+        if: always()
         run: zip release.zip ./dist/* -r
 
       - name: Upload artifact for deployment job

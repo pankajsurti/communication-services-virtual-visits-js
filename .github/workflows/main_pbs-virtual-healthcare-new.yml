@@ -36,7 +36,7 @@ jobs:
         working-directory: ./client
         run: |
           npm install concurrently 
-          npm run package
+          npm run package  --legacy-peer-deps
 
       - name: Zip artifact for deployment
         # if: always()

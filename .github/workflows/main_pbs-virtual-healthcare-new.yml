@@ -30,7 +30,7 @@ jobs:
       - name: Build server
         working-directory: ./server
         run: |
-          npm install react-dev-utils
+          npm install react-dev-utils@12.0.1
           npm install 
           npm audit fix --force
           npm run build:project

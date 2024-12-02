@@ -79,5 +79,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: "pbs-virtual-healthcare-new"
-          slot-name: "Production"
-          package: .
+          # slot-name: "Production"
+          package: ./server/dist

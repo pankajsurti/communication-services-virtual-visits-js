@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "start:server": "ts-node-dev ./bin/www",
+    "start:server": "ts-node-dev --debug ./bin/www",
     "start:project": "concurrently \"npm run start:server\" \"cd ../client && npm run start:client\"",
     "start:prod": "cd ../dist && node server.js",
     "build:server": "webpack",
@@ -20,7 +20,7 @@
     "@azure/communication-chat": "1.0.0",
     "@azure/communication-common": "1.0.0",
     "@azure/communication-identity": "1.0.0",
-    "@azure/communication-rooms": "^1.0.0-alpha.20221017.1",
+    "@azure/communication-rooms": "^1.1.0",
     "@azure/core-http": "1.2.4",
     "@azure/cosmos": "^3.17.0",
     "@types/cors": "^2.8.8",

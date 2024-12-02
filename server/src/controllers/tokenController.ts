@@ -6,6 +6,7 @@ import { CommunicationIdentityClient, TokenScope } from '@azure/communication-id
 import { ServerConfigModel } from '../models/configModel';
 
 export const tokenController = (client: CommunicationIdentityClient, config: ServerConfigModel) => {
+  console.log('Beginning tokenController function');
   return async (_req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
     const scopes: TokenScope[] = config.chatEnabled ? ['chat', 'voip'] : ['voip'];
     let tokenResponse;

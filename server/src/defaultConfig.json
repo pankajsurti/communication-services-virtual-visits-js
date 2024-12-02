@@ -1,5 +1,5 @@
 {
-  "communicationServicesConnectionString": "endpoint=your_endpoint;accesskey=secret",
+  "communicationServicesConnectionString": "endpoint=https://test-acs-pankajsu.unitedstates.communication.azure.com/;accesskey=ON4zVHTpTJYFYNERCmo1HESh7fmxYSt6EGxv4ciPhXPQR6RdlDjrDLDNryeZCEXYJbfbUIyExIOA9xJ6DeAtww==",
   "microsoftBookingsUrl": "https://microsoftbookings.azurewebsites.net/?organization=financialservices&UICulture=en-US",
   "chatEnabled": true,
   "screenShareEnabled": true,

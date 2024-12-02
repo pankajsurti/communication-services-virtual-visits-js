@@ -4,7 +4,7 @@
 import express from 'express';
 import { CommunicationUserIdentifier } from '@azure/communication-common';
 import { CommunicationAccessToken, CommunicationIdentityClient, TokenScope } from '@azure/communication-identity';
-import { Room, RoomsClient, RoomParticipant, CreateRoomOptions } from '@azure/communication-rooms';
+import { CommunicationRoom, RoomsClient, RoomParticipant, CreateRoomOptions } from '@azure/communication-rooms';
 import { joinRoomRequestValidator } from '../utils/validators';
 import {
   CreateRoomResponse,
@@ -20,15 +20,18 @@ export const createRoom = (identityClient: CommunicationIdentityClient, roomsCli
   next: express.NextFunction
 ): Promise<any> => {
   try {
+    console.log('creating presenter and attendee...');
     const presenter = await identityClient.createUser();
+    console.log('created presenter');
     const attendee = await identityClient.createUser();
+    console.log('created attendee');
 
     // Options payload to create a room
     const validFrom = new Date();
     const validUntilDate = new Date(validFrom);
     validUntilDate.setHours(validFrom.getHours() + 1);
     const validUntil = new Date(validUntilDate);
-
+    console.log('creating room...');
     const createRoomOptions: CreateRoomOptions = {
       validFrom: validFrom,
       validUntil: validUntil,
@@ -43,12 +46,18 @@ export const createRoom = (identityClient: CommunicationIdentityClient, roomsCli
         }
       ]
     };
-
+    console.log('created room options');
     // Create a room with the request payload
-    const room: Room = await roomsClient.createRoom(createRoomOptions);
+    const room: CommunicationRoom = await roomsClient.createRoom(createRoomOptions);
+    console.log('created room');
+    // Retrieve participants list
+    const participantsList: RoomParticipant[] = [];
+    for await (const participant of roomsClient.listParticipants(room.id)) {
+      participantsList.push(participant);
+    }
 
     // Formulating participants
-    const participants: TestAppointmentRoomParticipant[] = room.participants.map(
+    const participants: TestAppointmentRoomParticipant[] = participantsList.map(
       (participant: RoomParticipant): TestAppointmentRoomParticipant => ({
         id: (participant.id as CommunicationUserIdentifier).communicationUserId as string,
         role: participant.role as RoomParticipantRole
@@ -65,6 +74,7 @@ export const createRoom = (identityClient: CommunicationIdentityClient, roomsCli
 
     return res.status(201).send(response);
   } catch (error) {
+    console.log('error', error);
     return next(error);
   }
 };
@@ -87,12 +97,19 @@ export const getToken = (identityClient: CommunicationIdentityClient, roomsClien
     const { roomId, userId } = requestData;
 
     // Retrieve participants list
-    const participantsList = await roomsClient.getParticipants(roomId as string);
+    const participantsList: RoomParticipant[] = [];
+    for await (const participant of roomsClient.listParticipants(roomId as string)) {
+      participantsList.push(participant);
+    }
 
     // Check if the user is part of participants
-    const foundUserParticipant: RoomParticipant | undefined = participantsList.find(
-      (participant: RoomParticipant) => (participant.id as CommunicationUserIdentifier).communicationUserId === userId
-    );
+    let foundUserParticipant: RoomParticipant | undefined;
+    for await (const participant of participantsList) {
+      if ((participant.id as CommunicationUserIdentifier).communicationUserId === userId) {
+        foundUserParticipant = participant;
+        break;
+      }
+    }
 
     if (!foundUserParticipant) {
       return res.status(404).send(ERROR_NO_USER_FOUND_IN_ROOM);

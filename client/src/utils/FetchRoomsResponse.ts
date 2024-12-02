@@ -29,6 +29,7 @@ export const fetchRoomsResponse = async (roomId: string, userId: string): Promis
 };
 
 export const createRoom = async (): Promise<CreateRoomResponse> => {
+  alert('Creating room...1234');
   const response = await fetch('/api/rooms', {
     method: 'POST',
     headers: {
